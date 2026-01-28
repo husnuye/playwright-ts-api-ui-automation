@@ -1,0 +1,28 @@
+# =========================
+# Dependencies
+# =========================
+node_modules/
+**/node_modules/
+
+# =========================
+# Playwright outputs (generated)
+# =========================
+playwright-report/
+test-results/
+**/playwright-report/
+**/test-results/
+
+# =========================
+# Large / generated artifacts
+# =========================
+*.zip
+*.webm
+
+# MP4: sadece test-results altını ignore et (demo videoları repo’da kalsın)
+**/test-results/**/*.mp4
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+.vscode/

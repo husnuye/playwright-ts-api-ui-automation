@@ -1,0 +1,52 @@
+name: API Tests (Playwright)
+
+on:
+  push:
+    paths:
+      - "ApiTests/**"
+      - ".github/workflows/api-tests.yml"
+  pull_request:
+    paths:
+      - "ApiTests/**"
+      - ".github/workflows/api-tests.yml"
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ApiTests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: ApiTests/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # API testleri browser kullanmasa da Playwright runner için güvenli.
+      # İstersen bunu kaldırabiliriz; ama stabilite için bırakıyorum.
+      - name: Install Playwright (Chromium only)
+        run: npx playwright install --with-deps chromium
+
+      - name: Run API tests
+        env:
+          BOOKER_BASE_URL: https://restful-booker.herokuapp.com
+          BOOKER_USERNAME: admin
+          BOOKER_PASSWORD: password123
+        run: npm test
+
+      - name: Upload Playwright artifacts (report + test-results)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-artifacts
+          retention-days: 7
+          path: |
+            ApiTests/playwright-report
+            ApiTests/test-results

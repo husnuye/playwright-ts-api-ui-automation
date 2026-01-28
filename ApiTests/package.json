@@ -1,0 +1,20 @@
+{
+  "name": "apitests",
+  "version": "1.0.0",
+  "description": "Scope: Auth → Create (dynamic data, no hardcoded) → Get (schema + type validation) → Update (token) → Delete.",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "report": "playwright show-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1"
+  }
+}

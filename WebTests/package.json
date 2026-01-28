@@ -1,0 +1,28 @@
+{
+  "name": "webtests",
+  "version": "1.0.0",
+  "description": "Scope: - standard_user checkout flow + “Thank you for your order” - visual_user vs standard_user home screen visual comparison POM design pattern is used.",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "posttest": "node scripts/convert-videos.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-playwright": "^2.5.1",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3"
+  }
+}
