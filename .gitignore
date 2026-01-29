@@ -26,3 +26,9 @@ test-results/
 # =========================
 .DS_Store
 .vscode/
+
+
+# local env files
+**/.env
+**/.env.*
+!.env.example

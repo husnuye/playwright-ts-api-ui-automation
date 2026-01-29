@@ -59,6 +59,10 @@ That’s why you may see separate baseline files such as:
 
 ✅ This is expected and intentional: it prevents flaky CI failures due to OS rendering differences.
 
+```bash
+npx playwright test tests/specs/saucedemo.visual.spec.ts --update-snapshots
+
+
 ---
 
 ## 5) ▶️ Run Locally
