@@ -1,14 +1,11 @@
 # =========================
 # Dependencies
 # =========================
-node_modules/
 **/node_modules/
 
 # =========================
 # Playwright outputs (generated)
 # =========================
-playwright-report/
-test-results/
 **/playwright-report/
 **/test-results/
 
@@ -18,7 +15,7 @@ test-results/
 *.zip
 *.webm
 
-# MP4: sadece test-results altını ignore et (demo videoları repo’da kalsın)
+# MP4: only ignore Playwright-run videos (keep demo mp4 under /reports)
 **/test-results/**/*.mp4
 
 # =========================
@@ -27,8 +24,9 @@ test-results/
 .DS_Store
 .vscode/
 
-
-# local env files
+# =========================
+# Local env files
+# =========================
 **/.env
 **/.env.*
 !.env.example
