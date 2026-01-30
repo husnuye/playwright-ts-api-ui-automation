@@ -68,8 +68,10 @@ That’s why you may see separate baseline files such as:
 
 Update baselines locally:
 
-```bash
+bash
 npx playwright test tests/specs/saucedemo.visual.spec.ts --update-snapshots
+
+---
 
 ## 5) ▶️ Run Locally
 

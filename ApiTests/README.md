@@ -28,7 +28,7 @@ Scope covers the full Restful Booker booking lifecycle:
 ---
 
 ## 3) 📂 Project Structure
-```text
+
 ApiTests/
 ├─ src/
 │  ├─ client/        # BookerClient (API wrapper)
