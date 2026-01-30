@@ -44,7 +44,6 @@ Mac-friendly demo recordings are located under:
 ---
 
 ## 4) 📂 Project Structure
-```text
 WebTests/
 ├─ src/
 │  ├─ pages/         # POM pages (Login, Inventory, Cart, Checkout...)
