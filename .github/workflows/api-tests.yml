@@ -10,42 +10,37 @@ on:
       - "ApiTests/**"
       - ".github/workflows/api-tests.yml"
 
-# We deploy the Playwright HTML report to the `gh-pages` branch.
-# That requires write permission on repository contents.
 permissions:
   contents: write
 
 jobs:
   api-tests:
     runs-on: ubuntu-latest
-
-    # Keep the job scoped to ApiTests so commands stay simple and consistent.
     defaults:
       run:
         working-directory: ApiTests
 
     steps:
-      # 1) Checkout repository at the commit being tested.
+      # 1) Checkout repository at the commit being tested
       - uses: actions/checkout@v4
 
-      # 2) Setup Node + npm caching for faster CI runs.
-      # Cache is keyed by the lockfile of this suite.
+      # 2) Setup Node + npm caching (faster CI)
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: ApiTests/package-lock.json
 
-      # 3) Install dependencies exactly from package-lock (reproducible builds).
+      # 3) Install dependencies from lockfile (reproducible builds)
       - name: Install dependencies
         run: npm ci
 
-      # 4) Install Playwright browsers + system deps.
-      # Even though these are API tests, Playwright's runner/reporting is shared infra.
+      # 4) Install Playwright browsers + system deps
+      # Even for API tests, Playwright runner/reporting is shared.
       - name: Install Playwright (Chromium only)
         run: npx playwright install --with-deps chromium
 
-      # 5) Run API tests with explicit env vars so PRs are predictable.
+      # 5) Run API tests with explicit env vars
       - name: Run API tests
         env:
           BOOKER_BASE_URL: https://restful-booker.herokuapp.com
@@ -53,9 +48,7 @@ jobs:
           BOOKER_PASSWORD: password123
         run: npm test
 
-      # 6) Always upload artifacts (even on failure) for debugging:
-      # - playwright-report: HTML report
-      # - test-results: traces/attachments
+      # 6) Upload artifacts even on failure (debugging)
       - name: Upload Playwright artifacts (report + test-results)
         if: always()
         uses: actions/upload-artifact@v4
@@ -66,14 +59,14 @@ jobs:
             ApiTests/playwright-report
             ApiTests/test-results
 
-      # 7) Publish the HTML report to GitHub Pages (gh-pages branch).
-      # URL: https://<user>.github.io/<repo>/apitests/
+      # 7) Deploy HTML report to GitHub Pages (only on main branch)
+      # This avoids PR branches overwriting the public Pages site.
       - name: Deploy Playwright report to GitHub Pages
-        if: always()
+        if: always() && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ApiTests/playwright-report
           destination_dir: apitests
+          publish_dir: ApiTests/playwright-report
           keep_files: true

@@ -10,41 +10,36 @@ on:
       - "WebTests/**"
       - ".github/workflows/web-tests.yml"
 
-# We deploy the Playwright HTML report to the `gh-pages` branch.
-# That requires write permission on repository contents.
 permissions:
   contents: write
 
 jobs:
   web-tests:
     runs-on: ubuntu-latest
-
-    # Keep the job scoped to WebTests so commands stay simple and consistent.
     defaults:
       run:
         working-directory: WebTests
 
     steps:
-      # 1) Checkout repository at the commit being tested.
+      # 1) Checkout repository at the commit being tested
       - uses: actions/checkout@v4
 
-      # 2) Setup Node + npm caching for faster CI runs.
-      # Cache is keyed by the lockfile of this suite.
+      # 2) Setup Node + npm caching (faster CI)
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: WebTests/package-lock.json
 
-      # 3) Install dependencies exactly from package-lock (reproducible builds).
+      # 3) Install dependencies from lockfile (reproducible builds)
       - name: Install dependencies
         run: npm ci
 
-      # 4) Install Playwright browsers + system deps (Chromium only for speed).
+      # 4) Install Playwright browsers + system deps
       - name: Install Playwright (Chromium only)
         run: npx playwright install --with-deps chromium
 
-      # 5) Run UI tests with explicit env vars so PRs are predictable.
+      # 5) Run UI tests with explicit env vars
       - name: Run UI tests
         env:
           SAUCE_BASE_URL: https://www.saucedemo.com
@@ -53,9 +48,7 @@ jobs:
           SAUCE_PASSWORD: secret_sauce
         run: npm test
 
-      # 6) Always upload artifacts (even on failure) for debugging:
-      # - playwright-report: HTML report
-      # - test-results: traces/screenshots/videos (raw)
+      # 6) Upload artifacts even on failure (debugging)
       - name: Upload Playwright artifacts (report + test-results)
         if: always()
         uses: actions/upload-artifact@v4
@@ -66,14 +59,13 @@ jobs:
             WebTests/playwright-report
             WebTests/test-results
 
-      # 7) Publish the HTML report to GitHub Pages (gh-pages branch).
-      # URL: https://<user>.github.io/<repo>/webtests/
+      # 7) Deploy HTML report to GitHub Pages (only on main branch)
       - name: Deploy Playwright report to GitHub Pages
-        if: always()
+        if: always() && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: WebTests/playwright-report
           destination_dir: webtests
+          publish_dir: WebTests/playwright-report
           keep_files: true

@@ -47,6 +47,13 @@ AI tasks covered:
 
 ## 4) 🎥 Demo Videos (MP4)
 
+Recorded demo outputs are committed under:
+
+- `reports/demo-videos/standard.mp4`
+- `reports/demo-videos/visual.mp4`
+
+---
+
 ## Visual Testing (Snapshots)
 
 This project uses Playwright `toHaveScreenshot()` for visual regression.
@@ -59,20 +66,19 @@ That’s why you may see separate baseline files such as:
 
 ✅ This is expected and intentional: it prevents flaky CI failures due to OS rendering differences.
 
+Update baselines locally:
+
 ```bash
 npx playwright test tests/specs/saucedemo.visual.spec.ts --update-snapshots
 
-
----
-
 ## 5) ▶️ Run Locally
 
-### Requirements
-- Node.js (20+ recommended)
-- npm
+Requirements
+	•	Node.js (20+ recommended)
+	•	npm
 
-### API
-```bash
+API
+
 cd ApiTests
 cp .env.example .env
 npm ci
@@ -81,8 +87,7 @@ npm test
 npm run report
 
 
-
- ### UI
+UI
 
 cd WebTests
 npm ci
@@ -100,6 +105,14 @@ Both projects are configured to keep test evidence:
 Artifacts are generated under:
 	•	*/playwright-report/ (HTML report)
 	•	*/test-results/ (trace/video/screenshots on failure; snapshot diffs for visual tests)
+
+Test Reports (GitHub Pages)
+
+After each CI run, Playwright HTML reports are published to GitHub Pages:
+	•	API report: https://husnuye.github.io/playwright-ts-api-ui-automation/apitests/
+	•	UI report:  https://husnuye.github.io/playwright-ts-api-ui-automation/webtests/
+
+If you don’t see the latest run immediately, wait a minute and refresh.
 
 ⸻
 
@@ -119,13 +132,13 @@ Artifacts are generated under:
 ├─ prompts/
 │  └─ prompts.md
 └─ reports/
-   ├─ Test-Strategy-Analysis.pdf
-   ├─ Part3-Scenario-Mining.md
-   └─ demo-videos/
+├─ Test-Strategy-Analysis.pdf
+├─ Part3-Scenario-Mining.md
+└─ demo-videos/
 
+⸻
 
-##8) 🚀 CI/CD (GitHub Actions)
-
+## 8) 🚀 CI/CD (GitHub Actions)
 
 Two separate workflows are provided:
 	•	.github/workflows/api-tests.yml → runs ApiTests only
@@ -136,13 +149,19 @@ Each workflow:
 	•	installs Playwright browsers
 	•	runs tests
 	•	uploads artifacts (playwright-report/, test-results/) for debugging
+	•	publishes the HTML report to GitHub Pages
 
 Visual tests use OS-specific baselines. Linux baselines are included for CI runs.
 
 ⸻
-## 9) Notes (Principal QA mindset)
-		Focuses on high-signal coverage: API lifecycle + UI critical flow + visual regression check.
-	•	Uses dynamic test data to reduce brittleness.
-	•	Uses schema validation to verify response contracts (structure/types), not just status codes.
 
-    
+## 9) Notes (Principal QA mindset)
+	•	Focuses on high-signal coverage: API lifecycle + UI critical flow + visual regression check.
+	•	Uses dynamic test data to reduce brittleness.
+	•	Uses schema validation to verify response contracts (structure/types), not just status
+
+
+
+
+
+
