@@ -9,7 +9,7 @@ import Ajv from "ajv";
  * - Faster than creating a new Ajv instance per validation call
  * - Keeps schema validation behavior consistent across the suite
  */
-const ajv = new Ajv({ allErrors: true, strict: false });
+const ajv = new Ajv({ allErrors: true });
 
 type SchemaValidationResult = {
   ok: boolean;

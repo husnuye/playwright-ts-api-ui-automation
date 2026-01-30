@@ -74,7 +74,6 @@ Feature: Coupon discount calculation
 
   Background:
     Given the pricing service is available
-    And the customer is on the checkout page
 
   Scenario: Correct total discount for mixed cart with item promotion, coupon cap and minimum threshold
     Given the cart contains:
@@ -82,15 +81,19 @@ Feature: Coupon discount calculation
       | A-001 | Running Shoes  | 1   | 120.00     | PERCENT         | 10               |
       | B-010 | Socks (3-pack) | 2   | 25.00      | NONE            | 0                |
     And shipping fee is 10.00
-    And tax is calculated on discounted item totals
+    And tax rate is 0%  # keep 0% to isolate discount math (tax can be separate scenarios)
+    And eligible items for coupon "SAVE20" are: A-001, B-010
     And a coupon code "SAVE20" is configured as:
       | type                | value | applies_to           | min_subtotal | max_discount |
       | PERCENT_ON_SUBTOTAL | 20    | ELIGIBLE_ITEMS_ONLY  | 100.00       | 30.00        |
+
     When the customer applies the coupon code "SAVE20"
+
     Then item-level promotions should be applied before the coupon discount
-    And the coupon discount should apply only to eligible items after item-level promotions
-    And the coupon discount should not exceed the maximum discount cap of 30.00
-    And the subtotal after all discounts should be greater than or equal to 0.00
-    And the total discount displayed should equal the sum of item-level promotions and coupon discount
+    And the item promo discount for A-001 should be 12.00
+    And the subtotal after item promos should be 158.00
+    And the raw coupon discount should be 31.60
+    And the coupon discount should be capped to 30.00
+    And the total discount displayed should be 42.00
+    And the final total (subtotal - discounts + shipping) should be 126.00
     And all monetary values should be rounded to 2 decimal places using standard rounding
-    And the order total displayed should match the backend invoice total

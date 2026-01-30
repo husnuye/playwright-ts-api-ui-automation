@@ -54,19 +54,15 @@ cd ApiTests
 npm ci
 npx playwright install
 
-
 ## 5) ▶️ Run
 
 Run all tests
-
 npm test
 
 List tests
-
 npx playwright test --list
 
 Open HTML report
-
 npm run report
 
 ## 6) ⚙️ Configuration (Environment Variables)
