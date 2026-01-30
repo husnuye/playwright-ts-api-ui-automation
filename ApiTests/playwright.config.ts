@@ -7,6 +7,6 @@ export default defineConfig({
   reporter: [["html", { open: "never" }], ["list"]],
   use: {
     baseURL: process.env.BOOKER_BASE_URL ?? "https://restful-booker.herokuapp.com",
-    trace: "retain-on-failure"
-  }
+    trace: "retain-on-failure",
+  },
 });
